@@ -1,0 +1,114 @@
+
+<div class="container-view">
+
+    <div class="player-container" ng-class="{'on' : state.currentStatusId == 1 || state.currentStatusId == 2}">
+        <h2>My Playlist</h2>
+        <div class="toolbar">
+            <div class="actions">
+                <button ng-click="addTrack()"><i class="fa fa-plus"></i> Add Track</button>
+            </div>
+
+            <div class="search">
+                <label><i class="fa fa-search"></i></label>
+                <input type="search" ng-model="searchInput">
+            </div>
+        </div>
+
+        <table class="playlist" ng-show="tracks.length > 0">
+            <thead>
+            <tr>
+                <th></th>
+                <th class="album"></th>
+                <th><i class="fa fa-music"></i> Name</th>
+                <th><i class="fa fa-user"></i> Artist</th>
+                <th><i class="fa fa-clock-o"></i> Time</th>
+                <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr ng-class="{'current' : state.currentId == track.id}" ng-repeat="track in filtered = (tracks | filter: searchInput)">
+
+                <td class="track-controls">
+
+                    <span class="play"  ng-click="playx($index)" ng-if="track.statusId == 0 || track.statusId == 2"><i class="fa fa-play"></i></span>
+
+
+                    <span class="pause" ng-click="pause()" ng-if="track.statusId == 1"><i class="fa fa-pause"></i></span>
+
+
+                    <span class="stop"  ng-click="stop()" ng-if="track.statusId == 1 || track.statusId == 2"><i class="fa fa-stop"></i></span>
+
+                </td>
+
+                <td class="cover">
+                    <img src="images/{{track.cover}}.png" alt="">
+                </td>
+
+                <td class="title">
+                    <span>{{track.title}}</span>
+                </td>
+
+                <td class="artist">
+                    <span>{{track.artist}}</span>
+                </td>
+
+                <td class="duration">
+                    <span>{{track.duration}}</span>
+                </td>
+
+                <td class="playlist-controls" ng-if="!searchInput">
+                    <span ng-click="up($index)"><i class="fa fa-chevron-up"></i></span>
+                    <span ng-click="down($index)"><i class="fa fa-chevron-down"></i></span>
+                    <span class="remove" ng-click="remove($index)"><i class="fa fa-times"></i></span>
+                </td>
+
+            </tr>
+            </tbody>
+
+        </table>
+
+        <div class="empty" ng-hide="tracks.length > 0">
+            <div>
+                <span>There's nothing in your playlist, why not add something new?</span>
+                <button ng-click="addTrack()"><i class="fa fa-plus"></i> Add Track</button>
+            </div>
+        </div>
+
+        <div class="empty" ng-hide="filtered.length > 0 || tracks.length == 0">
+            <div>
+                <span>No coincidences with: '{{searchInput}}'</span>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div class="current-track" ng-class="{
+    'play' : state.currentStatusId == 1,
+    'pause' : state.currentStatusId == 2
+    }">
+
+    <div ng-if="!state.playing" class="no-selection">
+        <span>Select a track</span>
+    </div>
+
+    <div ng-if="state.playing" class="info">
+
+        <div class="cover">
+            <img src="images/{{state.currentCover}}.png" alt="">
+        </div>
+
+        <div class="track">
+            <div class="title">{{state.currentTitle}}</div>
+            <div class="artist">{{state.currentArtist}}</div>
+        </div>
+
+
+    </div>
+
+</div>
+
